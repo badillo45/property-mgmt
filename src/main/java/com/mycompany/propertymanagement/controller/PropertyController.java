@@ -14,7 +14,7 @@ import java.util.List;
 @RequestMapping("/api/v1")
 public class PropertyController {
 
-    @Value("${ppty.test}")//application.properties .can be used at any file
+    @Value("${ppty.test:}")//application.properties .can be used at any file. use colon after for optional
     String testProperty;
 
     @Autowired
