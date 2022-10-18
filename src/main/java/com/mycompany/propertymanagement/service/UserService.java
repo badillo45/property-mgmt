@@ -7,4 +7,6 @@ public interface UserService {
     UserDto registerUser(UserDto userDto);
 
     UserDto login(UserDto userDto);
+
+    UserDto loginDual(UserDto userDto);
 }

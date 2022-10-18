@@ -16,6 +16,18 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity registerUser(@RequestBody UserDto userDto){
         userDto = userService.registerUser(userDto);
+        return new ResponseEntity<UserDto>(userDto, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity login(@RequestBody UserDto userDto){
+        userDto = userService.login(userDto);
+        return new ResponseEntity<UserDto>(userDto, HttpStatus.OK);
+    }
+
+    @PostMapping("/log_in")
+    public ResponseEntity loginDual(@RequestBody UserDto userDto){
+        userDto = userService.loginDual(userDto);
         return new ResponseEntity<UserDto>(userDto, HttpStatus.OK);
     }
 }

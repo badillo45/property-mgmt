@@ -24,6 +24,15 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public UserDto login(UserDto userDto) {
-        return null;
+        var result = userRepository.findByUserNameAndPassword(userDto.getUserName(),userDto.getPassword());
+
+        return result.isPresent() ? UserConverter.convertUserEntityToDto(result.get()) : null;
+    }
+
+    @Override
+    public UserDto loginDual(UserDto userDto) {
+        var result = userRepository.findByPasswordAndUserNameOrEmail(userDto.getPassword(),userDto.getUserName(),userDto.getEmail());
+
+        return result.isPresent() ? UserConverter.convertUserEntityToDto(result.get()) : null;
     }
 }
