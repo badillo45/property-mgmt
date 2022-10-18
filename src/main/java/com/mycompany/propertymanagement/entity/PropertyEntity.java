@@ -9,22 +9,20 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "PROPERTY")
+@Table(name = "T_PROPERTY")
 @Getter
 @Setter
 @NoArgsConstructor
 public class PropertyEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true,nullable = false)
     private Long id;
     @Column(nullable = false,name = "PROPERTY_TITLE")
     private String title;
     @Column(name = "PROPERTY_DESC")
     private String description;
-    private String ownerName;
-    private String ownerEmail;
     private Double price;
     private String address;
 

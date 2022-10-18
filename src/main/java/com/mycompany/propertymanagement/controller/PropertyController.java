@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -27,16 +28,19 @@ public class PropertyController {
     }
 
     @GetMapping("/test-prop")
-    public ResponseEntity getDisplay(@RequestBody PropertyDto prop) {
+    public ResponseEntity<String> getDisplay(@RequestBody PropertyDto prop) {
 
         String ret = propertyService.outputProperty(prop);
         return new ResponseEntity<String>(ret, HttpStatus.FOUND);
     }
 
     @GetMapping("/property")
-    public ResponseEntity<List<PropertyDto>> getAllProperties() {
+    public ResponseEntity<Object> getAllProperties() {
         List<PropertyDto> propertyList = propertyService.getAllProperties();
-        return new ResponseEntity<List<PropertyDto>>(propertyList, HttpStatus.OK);
+
+        if(propertyList != null && propertyList.isEmpty())
+            return new ResponseEntity<>("No Property Found.", HttpStatus.I_AM_A_TEAPOT);
+        return new ResponseEntity<>(propertyList, HttpStatus.OK);
     }
 
     @PostMapping("/property")
@@ -52,7 +56,7 @@ public class PropertyController {
     @DeleteMapping("/property/{propertyId}")
     public ResponseEntity deleteProperty(@PathVariable Long propertyId) {
         propertyService.deleteProperty(propertyId);
-        return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        return new ResponseEntity(null, HttpStatus.NO_CONTENT);
     }
     @PatchMapping("/property/{propertyName}/{propertyId}")
     public ResponseEntity patchProperty(@RequestBody PropertyDto propertyDto, @PathVariable String propertyName,@PathVariable Long propertyId) {

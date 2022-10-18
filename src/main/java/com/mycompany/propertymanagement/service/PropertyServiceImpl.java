@@ -71,12 +71,6 @@ public class PropertyServiceImpl implements PropertyService{
             case "description":
                 propertyEntity.setDescription(propertyDto.getDescription());
                 break;
-            case "ownerName":
-                propertyEntity.setOwnerName(propertyDto.getOwnerName());
-                break;
-            case "ownerEmail":
-                propertyEntity.setOwnerEmail(propertyDto.getOwnerEmail());
-                break;
             case "price":
                 propertyEntity.setPrice(propertyDto.getPrice());
                 break;
