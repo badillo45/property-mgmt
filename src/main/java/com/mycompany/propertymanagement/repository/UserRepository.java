@@ -8,8 +8,12 @@ import java.util.Optional;
 
 public interface UserRepository extends CrudRepository<UserEntity,Long> {
 
-    public Optional<UserEntity> findByUserNameAndPassword(String userName, String password);
+    Optional<UserEntity> findByUserNameAndPassword(String userName, String password);
 
     @Query("SELECT ue FROM UserEntity ue WHERE password = ?1 and (userName = ?2 or email=?3)")
-    public Optional<UserEntity> findByPasswordAndUserNameOrEmail(String password, String userName, String email);
+    Optional<UserEntity> findByPasswordAndUserNameOrEmail(String password, String userName, String email);
+
+    Long countByUserName(String userName);
+
+    Long countByEmail(String email);
 }

@@ -11,11 +11,13 @@ import java.util.Date;
 @Component
 public class UserConverter {
     public static UserEntity convertUserDtoToEntity (UserDto userDto){
+        if(userDto == null) return null;
         UserEntity userEntity = new UserEntity();
         setUserEntityPropertiesFromDto(userEntity, userDto);
         return userEntity;
     }
     public static UserDto convertUserEntityToDto(UserEntity userEntity){
+        if(userEntity == null) return null;
         var userDto = new UserDto();
         userDto.setUserName(userEntity.getUserName());
         userDto.setId(userEntity.getId());
