@@ -1,6 +1,7 @@
 package com.mycompany.propertymanagement.converter;
 
 import com.mycompany.propertymanagement.dto.PropertyDto;
+import com.mycompany.propertymanagement.entity.AddressEntity;
 import com.mycompany.propertymanagement.entity.PropertyEntity;
 import org.springframework.stereotype.Component;
 
@@ -10,7 +11,6 @@ public class PropertyConverter {
         if(propertyDto ==null) return null;
 
         PropertyEntity propertyEntity = new PropertyEntity();
-        //propertyEntity.setId(propertyDto.getId());
         setEntityPropertiesFromDto(propertyEntity,propertyDto);
 
         return propertyEntity;
@@ -25,9 +25,20 @@ public class PropertyConverter {
         propertyDto.setTitle(propertyEntity.getTitle());
         propertyDto.setDescription(propertyEntity.getDescription());
         propertyDto.setPrice(propertyEntity.getPrice());
-        propertyDto.setAddress(propertyEntity.getAddress());
 
         return propertyDto;
+    }
+
+    public AddressEntity extractAddressEntityFromPropertyDto(PropertyDto propertyDto){
+        if(propertyDto ==null) return null;
+
+        AddressEntity addressEntity = new AddressEntity();
+        addressEntity.setCity(propertyDto.getCity());
+        addressEntity.setHouseNo(propertyDto.getHouseNo());
+        addressEntity.setPostalCode(propertyDto.getPostalCode());
+        addressEntity.setStreetName(propertyDto.getStreetName());
+
+        return addressEntity;
     }
 
     public static void setEntityPropertiesFromDto(PropertyEntity propertyEntity, PropertyDto propertyDto){
@@ -35,6 +46,5 @@ public class PropertyConverter {
         propertyEntity.setTitle(propertyDto.getTitle());
         propertyEntity.setDescription(propertyDto.getDescription());
         propertyEntity.setPrice(propertyDto.getPrice());
-        propertyEntity.setAddress(propertyDto.getAddress());
     }
 }

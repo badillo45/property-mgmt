@@ -25,5 +25,11 @@ public class UserEntity {
     private String contactNo;
     private String password;
     private Date registeredDt;
+    //TODO implement code for this
+    /*
+    @OneToOne
+    @JoinColumn(name = "ADDRESS_ID", nullable = false)
+    private AddressEntity address;
 
+     */
 }

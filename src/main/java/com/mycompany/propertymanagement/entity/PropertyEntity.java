@@ -1,7 +1,5 @@
 package com.mycompany.propertymanagement.entity;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.mycompany.propertymanagement.dto.PropertyDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -24,6 +22,13 @@ public class PropertyEntity {
     @Column(name = "PROPERTY_DESC")
     private String description;
     private Double price;
-    private String address;
+
+    @ManyToOne
+    @JoinColumn(name = "USER_ID", nullable = false)
+    private UserEntity userEntity;
+
+    @OneToOne
+    @JoinColumn(name = "ADDRESS_ID", nullable = false)
+    private AddressEntity address;
 
 }

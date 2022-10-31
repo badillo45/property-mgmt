@@ -1,12 +1,8 @@
 package com.mycompany.propertymanagement.converter;
 
-import com.mycompany.propertymanagement.dto.PropertyDto;
 import com.mycompany.propertymanagement.dto.UserDto;
-import com.mycompany.propertymanagement.entity.PropertyEntity;
 import com.mycompany.propertymanagement.entity.UserEntity;
 import org.springframework.stereotype.Component;
-
-import java.util.Date;
 
 @Component
 public class UserConverter {

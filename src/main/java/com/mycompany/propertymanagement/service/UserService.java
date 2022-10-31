@@ -1,7 +1,6 @@
 package com.mycompany.propertymanagement.service;
 
 import com.mycompany.propertymanagement.dto.UserDto;
-import org.apache.catalina.User;
 
 import java.util.Optional;
 

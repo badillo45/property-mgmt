@@ -15,4 +15,5 @@ public interface PropertyService {
     PropertyDto patchProperty(PropertyDto propertyDto, String propertyName, Long propertyId);
 
 
+    List<PropertyDto> getAllProperiesByUserId(Long userId);
 }

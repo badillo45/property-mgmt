@@ -10,7 +10,12 @@ public class PropertyDto {
     private String title;
     private String description;
     private Double price;
-    private String address;
+    //address properties
+    private String houseNo;
+    private String streetName;
+    private String city;
+    private String postalCode;
+    private Long ownerId;
 
     @JsonProperty("propId")
     private Long id;
