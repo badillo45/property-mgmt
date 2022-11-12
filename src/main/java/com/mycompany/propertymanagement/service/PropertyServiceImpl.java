@@ -3,13 +3,18 @@ package com.mycompany.propertymanagement.service;
 import com.mycompany.propertymanagement.converter.PropertyConverter;
 import com.mycompany.propertymanagement.dto.PropertyDto;
 import com.mycompany.propertymanagement.entity.PropertyEntity;
+import com.mycompany.propertymanagement.entity.UserEntity;
+import com.mycompany.propertymanagement.exception.BusinessLogicException;
+import com.mycompany.propertymanagement.exception.ErrorModel;
+import com.mycompany.propertymanagement.repository.AddressRepository;
 import com.mycompany.propertymanagement.repository.PropertyRepository;
+import com.mycompany.propertymanagement.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class PropertyServiceImpl implements PropertyService{
@@ -17,6 +22,11 @@ public class PropertyServiceImpl implements PropertyService{
     private PropertyRepository propertyRepository;
     @Autowired
     private PropertyConverter propertyConverter;
+    @Autowired
+    private AddressRepository addressRepository;
+    @Autowired
+    private UserRepository userRepository;
+
 
     @Override
     public String outputProperty(PropertyDto propertyDto) {
@@ -30,6 +40,25 @@ public class PropertyServiceImpl implements PropertyService{
     @Override
     public PropertyDto saveProperty(PropertyDto propertyDto) {
         var propertyEntity = propertyConverter.convertDTOToEntity(propertyDto);
+        var addressEntity = propertyConverter.extractAddressEntityFromPropertyDto(propertyDto);
+
+        addressEntity = addressRepository.save(addressEntity);
+        propertyEntity.setAddress(addressEntity);
+
+        Optional<UserEntity> owner = userRepository.findById(propertyDto.getOwnerId());
+
+        if(owner.isPresent()) {
+            propertyEntity.setUserEntity(owner.get());
+        }else {
+            var errors = new ArrayList<ErrorModel>();
+            var error = new ErrorModel();
+            error.setMessage("User does not exist");
+            error.setErrorCode("INVALID_USER_ERROR");
+            errors.add(error);
+
+            throw new BusinessLogicException(errors);
+        }
+
         propertyEntity  = propertyRepository.save(propertyEntity);
         return propertyConverter.convertEntityToDTO(propertyEntity);
     }
@@ -37,11 +66,9 @@ public class PropertyServiceImpl implements PropertyService{
     public List<PropertyDto> getAllProperties() {
         List<PropertyEntity> propEntityList = (List<PropertyEntity>) propertyRepository.findAll();
 
-        var propDtoList = propEntityList.stream()
+        return propEntityList.stream()
                 .map(a -> propertyConverter.convertEntityToDTO(a))
-                .collect(Collectors.toList());
-
-        return propDtoList;
+                .toList();
     }
     @Override
     public void deleteProperty(Long propertyId) {
@@ -71,17 +98,8 @@ public class PropertyServiceImpl implements PropertyService{
             case "description":
                 propertyEntity.setDescription(propertyDto.getDescription());
                 break;
-            case "ownerName":
-                propertyEntity.setOwnerName(propertyDto.getOwnerName());
-                break;
-            case "ownerEmail":
-                propertyEntity.setOwnerEmail(propertyDto.getOwnerEmail());
-                break;
             case "price":
                 propertyEntity.setPrice(propertyDto.getPrice());
-                break;
-            case "address":
-                propertyEntity.setAddress(propertyDto.getAddress());
                 break;
             default:
                 break;
@@ -89,5 +107,12 @@ public class PropertyServiceImpl implements PropertyService{
         propertyRepository.save(propertyEntity);
         return propertyConverter.convertEntityToDTO(propertyEntity);
     }
+    @Override
+    public List<PropertyDto> getAllProperiesByUserId(Long userId) {
+        List<PropertyEntity> propEntityList = propertyRepository.getAllByUserEntityId(userId);
 
+        return propEntityList.stream()
+                .map(a -> propertyConverter.convertEntityToDTO(a))
+                .toList();
+    }
 }
