@@ -2,6 +2,11 @@ package com.mycompany.propertymanagement.controller;
 
 import com.mycompany.propertymanagement.dto.PropertyDto;
 import com.mycompany.propertymanagement.service.PropertyService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,6 +67,13 @@ public class PropertyController {
         return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
     }
     @PatchMapping("/property/{propertyName}/{propertyId}")
+    @Operation(summary = "Update specified Property (object) property (attribute) using its ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Update successful.",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = PropertyDto.class)) }),
+            @ApiResponse(responseCode = "404", description = "Property not found",
+                    content = @Content) })
     public ResponseEntity<PropertyDto> patchProperty(@RequestBody PropertyDto propertyDto, @PathVariable String propertyName,@PathVariable Long propertyId) {
         PropertyDto pDto = propertyService.patchProperty(propertyDto,propertyName,propertyId);
         if(pDto != null){
