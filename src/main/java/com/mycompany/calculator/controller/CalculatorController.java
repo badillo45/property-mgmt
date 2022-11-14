@@ -1,4 +1,4 @@
-package com.mycompany.propertymanagement.controller;
+package com.mycompany.calculator.controller;
 
 import org.springframework.web.bind.annotation.*;
 
