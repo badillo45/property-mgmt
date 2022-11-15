@@ -13,6 +13,7 @@ public class CalculatorController {
     public Double product(@PathVariable("pNum1") Double num1, @PathVariable("pNum2") Double num2){
         return num1*num2;
     }
+
     //bad request if one param is missing
     @GetMapping("/add/{num1}")
     public Double product(@PathVariable("num1") Double num1, @RequestParam("num2") Double num2,@RequestParam("num3") Double num3){
